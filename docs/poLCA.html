@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>潜在クラスモデルフレームワーク</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+<link rel="stylesheet" href="site_style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h2 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h3 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h4 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h5 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.section h6 {
+  padding-top: 65px;
+  margin-top: -65px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Sickle Sword</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">memo</a>
+</li>
+<li>
+  <a href="estat-api.html">estat-api</a>
+</li>
+<li>
+  <a href="reticulate.html">reticulate</a>
+</li>
+<li>
+  <a href="poLCA.html">潜在クラスモデル</a>
+</li>
+<li>
+  <a href="tidygraph.html">tidygraph</a>
+</li>
+<li>
+  <a href="Rmarkdownで卒論を書く.html">Rmarkdownで卒論</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">潜在クラスモデルフレームワーク</h1>
+
+</div>
+
+
+<div id="関数polca_check_class" class="section level1">
+<h1>関数：poLCA_check_class</h1>
+<p>クラスごとの特徴を探索に使いやすい表を出力する関数</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>poLCA_check_class &lt;-<span class="st"> </span><span class="cf">function</span>(data){</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  class_prop &lt;-</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">tibble</span>(</span>
+<span id="cb1-4"><a href="#cb1-4"></a>      <span class="dt">estimate =</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>        dplyr<span class="op">::</span><span class="kw">pull</span>(data, .data<span class="op">$</span>model) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="st">        </span>purrr<span class="op">::</span><span class="kw">flatten</span>() <span class="op">%&gt;%</span><span class="st"> </span>.<span class="op">$</span>P</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">transmute</span>(</span>
+<span id="cb1-9"><a href="#cb1-9"></a>      <span class="dt">variable =</span> <span class="st">&#39;クラス構成割合&#39;</span>, </span>
+<span id="cb1-10"><a href="#cb1-10"></a>      <span class="dt">class =</span> dplyr<span class="op">::</span><span class="kw">row_number</span>(),</span>
+<span id="cb1-11"><a href="#cb1-11"></a>      <span class="dt">outcome =</span> <span class="ot">NA_real_</span>, </span>
+<span id="cb1-12"><a href="#cb1-12"></a>      estimate</span>
+<span id="cb1-13"><a href="#cb1-13"></a>    )</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  </span>
+<span id="cb1-15"><a href="#cb1-15"></a>  lca_output &lt;-</span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="st">    </span>tidyr<span class="op">::</span><span class="kw">unnest</span>(data, .data<span class="op">$</span>tidy) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">select</span>(variable<span class="op">:</span>estimate) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">bind_rows</span>(class_prop, .) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="st">    </span>dplyr<span class="op">::</span><span class="kw">mutate</span>(<span class="dt">estimate =</span> <span class="kw">round</span>(estimate, <span class="dv">3</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="st">    </span>tidyr<span class="op">::</span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> class, <span class="dt">values_from =</span> estimate) </span>
+<span id="cb1-21"><a href="#cb1-21"></a>  </span>
+<span id="cb1-22"><a href="#cb1-22"></a>  <span class="kw">return</span>(lca_output)</span>
+<span id="cb1-23"><a href="#cb1-23"></a>    </span>
+<span id="cb1-24"><a href="#cb1-24"></a>}</span></code></pre></div>
+</div>
+<div id="潜在クラス分析フレームワーク" class="section level1">
+<h1>潜在クラス分析フレームワーク</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(poLCA)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(tidyverse)</span></code></pre></div>
+<p>poLCAを使った潜在クラス分析の基本的なやり方・フレームワークのメモ<br />
+実は英語論文に詳しい解説があり，中澤論文の多項ロジット潜在クラス分析のやり方も載ってる：<a href="https://www.jstatsoft.org/article/view/v042i10">参考</a></p>
+<div id="データセット" class="section level2">
+<h2>データセット</h2>
+<p>poLCAパッケージに付属の<code>carcinoma</code>を使用する。<br />
+このデータは，子宮頚部に癌腫が存在するか否かについて，118患者に対する7人の病理学者の診断結果で，1であれば陰性，2であれば陽性である。<br />
+おそらく，絶対に陰性，絶対に陽性，判断が微妙みたいなクラスが出てくるんじゃないだろうか。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">data</span>(<span class="st">&quot;carcinoma&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="潜在クラスの推定" class="section level1">
+<h1>潜在クラスの推定</h1>
+<p>以上のデータを利用して実際に潜在クラス分析を行う。</p>
+<div id="formulaの書き方" class="section level2">
+<h2>formulaの書き方</h2>
+<p>poLCA関数に渡すformulaは書き方に慣れが必要<br />
+基本的にはモデルに投入する変数を選択→ matrixに変換→ <code>~ 1</code>と最後に書く<br />
+また，<code>~ 1</code>の1の代わりに，共変量（例えばデータセット内に存在する年齢とかの変数）を書けば，多項ロジット潜在クラス分析になる。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>formula &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(carcinoma) <span class="op">~</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
+</div>
+<div id="推定" class="section level2">
+<h2>推定</h2>
+<p>クラス数を1から5まで変化させながら潜在クラスの推定を行う。 <code>poLCA</code>の<code>maxiter</code>は，最大対数尤度を求める反復計算を最大何回行うかを表し，この回数を超えても解が収束しない場合，エラーが出る。<br />
+<code>nrep</code>は，局所解の問題に対処するために，何回モデルを回すかを表し，この回数分初期値を変えながら潜在クラスの推定を行うことができる。<br />
+<code>tidy</code>には応答確率確率などが，<code>glance</code>にはBICなどのモデル選択に使う指標が，<code>augment</code>には各クラスへの所属確率や，modal assignmentにより決定した所属クラスなどが含まれる。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>result &lt;-<span class="st"> </span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span><span class="kw">tibble</span>(<span class="dt">model.no =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="dt">model =</span> <span class="kw">map</span>(model.no,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>                <span class="op">~</span>{<span class="kw">poLCA</span>(<span class="dt">formula =</span> formula, <span class="dt">data =</span> carcinoma, <span class="dt">nclass =</span> .,</span>
+<span id="cb5-6"><a href="#cb5-6"></a>                        <span class="dt">maxiter =</span> <span class="dv">5000</span>, <span class="dt">nrep =</span> <span class="dv">5</span>)}),</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="dt">tidy =</span> <span class="kw">map</span>(model, broom<span class="op">::</span>tidy),</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    <span class="dt">glance =</span> <span class="kw">map</span>(model, broom<span class="op">::</span>glance),</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    <span class="dt">augment =</span> <span class="kw">map</span>(model, broom<span class="op">::</span>augment)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>  )</span></code></pre></div>
+<pre><code>## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $A
+##            Pr(1)  Pr(2)
+## class 1:  0.4407 0.5593
+## 
+## $B
+##            Pr(1)  Pr(2)
+## class 1:  0.3305 0.6695
+## 
+## $C
+##            Pr(1)  Pr(2)
+## class 1:  0.6186 0.3814
+## 
+## $D
+##            Pr(1)  Pr(2)
+## class 1:  0.7288 0.2712
+## 
+## $E
+##            Pr(1)  Pr(2)
+## class 1:  0.3983 0.6017
+## 
+## $F
+##            Pr(1)  Pr(2)
+## class 1:  0.7881 0.2119
+## 
+## $G
+##            Pr(1)  Pr(2)
+## class 1:  0.4407 0.5593
+## 
+## Estimated class population shares 
+##  1 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  1 
+##  
+## ========================================================= 
+## Fit for 1 latent classes: 
+## ========================================================= 
+## number of observations: 118 
+## number of estimated parameters: 7 
+## residual degrees of freedom: 111 
+## maximum log-likelihood: -524.4648 
+##  
+## AIC(1): 1062.93
+## BIC(1): 1082.324
+## G^2(1): 476.7814 (Likelihood ratio/deviance statistic) 
+## X^2(1): 1975.387 (Chi-square goodness of fit) 
+##  
+## Model 1: llik = -317.2568 ... best llik = -317.2568
+## Model 2: llik = -317.2568 ... best llik = -317.2568
+## Model 3: llik = -317.2568 ... best llik = -317.2568
+## Model 4: llik = -317.2568 ... best llik = -317.2568
+## Model 5: llik = -317.2568 ... best llik = -317.2568
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $A
+##            Pr(1)  Pr(2)
+## class 1:  0.8835 0.1165
+## class 2:  0.0000 1.0000
+## 
+## $B
+##            Pr(1)  Pr(2)
+## class 1:  0.6456 0.3544
+## class 2:  0.0169 0.9831
+## 
+## $C
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  0.2391 0.7609
+## 
+## $D
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  0.4589 0.5411
+## 
+## $E
+##            Pr(1)  Pr(2)
+## class 1:  0.7771 0.2229
+## class 2:  0.0214 0.9786
+## 
+## $F
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  0.5773 0.4227
+## 
+## $G
+##            Pr(1)  Pr(2)
+## class 1:  0.8835 0.1165
+## class 2:  0.0000 1.0000
+## 
+## Estimated class population shares 
+##  0.4988 0.5012 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.5 0.5 
+##  
+## ========================================================= 
+## Fit for 2 latent classes: 
+## ========================================================= 
+## number of observations: 118 
+## number of estimated parameters: 15 
+## residual degrees of freedom: 103 
+## maximum log-likelihood: -317.2568 
+##  
+## AIC(2): 664.5137
+## BIC(2): 706.0739
+## G^2(2): 62.36543 (Likelihood ratio/deviance statistic) 
+## X^2(2): 92.64814 (Chi-square goodness of fit) 
+##  
+## Model 1: llik = -293.705 ... best llik = -293.705
+## Model 2: llik = -293.705 ... best llik = -293.705
+## Model 3: llik = -293.705 ... best llik = -293.705
+## Model 4: llik = -293.705 ... best llik = -293.705
+## Model 5: llik = -293.705 ... best llik = -293.705
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $A
+##            Pr(1)  Pr(2)
+## class 1:  0.4872 0.5128
+## class 2:  0.0000 1.0000
+## class 3:  0.9427 0.0573
+## 
+## $B
+##            Pr(1)  Pr(2)
+## class 1:  0.0000 1.0000
+## class 2:  0.0191 0.9809
+## class 3:  0.8621 0.1379
+## 
+## $C
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  0.1425 0.8575
+## class 3:  1.0000 0.0000
+## 
+## $D
+##            Pr(1)  Pr(2)
+## class 1:  0.9424 0.0576
+## class 2:  0.4138 0.5862
+## class 3:  1.0000 0.0000
+## 
+## $E
+##            Pr(1)  Pr(2)
+## class 1:  0.2494 0.7506
+## class 2:  0.0000 1.0000
+## class 3:  0.9449 0.0551
+## 
+## $F
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  0.5236 0.4764
+## class 3:  1.0000 0.0000
+## 
+## $G
+##            Pr(1)  Pr(2)
+## class 1:  0.3693 0.6307
+## class 2:  0.0000 1.0000
+## class 3:  1.0000 0.0000
+## 
+## Estimated class population shares 
+##  0.1817 0.4447 0.3736 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.1949 0.4322 0.3729 
+##  
+## ========================================================= 
+## Fit for 3 latent classes: 
+## ========================================================= 
+## number of observations: 118 
+## number of estimated parameters: 23 
+## residual degrees of freedom: 95 
+## maximum log-likelihood: -293.705 
+##  
+## AIC(3): 633.41
+## BIC(3): 697.1357
+## G^2(3): 15.26171 (Likelihood ratio/deviance statistic) 
+## X^2(3): 20.50336 (Chi-square goodness of fit) 
+##  
+## Model 1: llik = -289.2858 ... best llik = -289.2858
+## Model 2: llik = -289.7889 ... best llik = -289.2858
+## Model 3: llik = -289.7889 ... best llik = -289.2858
+## Model 4: llik = -289.2858 ... best llik = -289.2858
+## Model 5: llik = -292.493 ... best llik = -289.2858
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $A
+##            Pr(1)  Pr(2)
+## class 1:  0.0000 1.0000
+## class 2:  0.9422 0.0578
+## class 3:  0.0000 1.0000
+## class 4:  0.4634 0.5366
+## 
+## $B
+##            Pr(1)  Pr(2)
+## class 1:  0.0000 1.0000
+## class 2:  0.8584 0.1416
+## class 3:  0.0905 0.9095
+## class 4:  0.0000 1.0000
+## 
+## $C
+##            Pr(1)  Pr(2)
+## class 1:  0.1561 0.8439
+## class 2:  1.0000 0.0000
+## class 3:  0.0186 0.9814
+## class 4:  1.0000 0.0000
+## 
+## $D
+##            Pr(1)  Pr(2)
+## class 1:  0.2421 0.7579
+## class 2:  1.0000 0.0000
+## class 3:  1.0000 0.0000
+## class 4:  0.9404 0.0596
+## 
+## $E
+##            Pr(1)  Pr(2)
+## class 1:  0.0000 1.0000
+## class 2:  0.9443 0.0557
+## class 3:  0.0000 1.0000
+## class 4:  0.2341 0.7659
+## 
+## $F
+##            Pr(1)  Pr(2)
+## class 1:  0.3823 0.6177
+## class 2:  1.0000 0.0000
+## class 3:  1.0000 0.0000
+## class 4:  1.0000 0.0000
+## 
+## $G
+##            Pr(1)  Pr(2)
+## class 1:  0.0000 1.0000
+## class 2:  1.0000 0.0000
+## class 3:  0.0000 1.0000
+## class 4:  0.3482 0.6518
+## 
+## Estimated class population shares 
+##  0.343 0.3751 0.0936 0.1882 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.3136 0.3729 0.1186 0.1949 
+##  
+## ========================================================= 
+## Fit for 4 latent classes: 
+## ========================================================= 
+## number of observations: 118 
+## number of estimated parameters: 31 
+## residual degrees of freedom: 87 
+## maximum log-likelihood: -289.2858 
+##  
+## AIC(4): 640.5717
+## BIC(4): 726.4629
+## G^2(4): 6.423452 (Likelihood ratio/deviance statistic) 
+## X^2(4): 10.08438 (Chi-square goodness of fit) 
+##  
+## Model 1: llik = -286.8843 ... best llik = -286.8843
+## Model 2: llik = -286.8843 ... best llik = -286.8843
+## Model 3: llik = -287.9228 ... best llik = -286.8843
+## Model 4: llik = -287.9228 ... best llik = -286.8843
+## Model 5: llik = -286.8843 ... best llik = -286.8843
+## Conditional item response (column) probabilities,
+##  by outcome variable, for each class (row) 
+##  
+## $A
+##            Pr(1)  Pr(2)
+## class 1:  0.9411 0.0589
+## class 2:  0.5551 0.4449
+## class 3:  0.0000 1.0000
+## class 4:  0.0000 1.0000
+## class 5:  0.0000 1.0000
+## 
+## $B
+##            Pr(1)  Pr(2)
+## class 1:  0.8652 0.1348
+## class 2:  0.0000 1.0000
+## class 3:  0.0763 0.9237
+## class 4:  0.0000 1.0000
+## class 5:  0.0000 1.0000
+## 
+## $C
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  1.0000 0.0000
+## class 3:  0.1685 0.8315
+## class 4:  0.1620 0.8380
+## class 5:  1.0000 0.0000
+## 
+## $D
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  1.0000 0.0000
+## class 3:  1.0000 0.0000
+## class 4:  0.2399 0.7601
+## class 5:  0.0000 1.0000
+## 
+## $E
+##            Pr(1)  Pr(2)
+## class 1:  0.9470 0.0530
+## class 2:  0.2294 0.7706
+## class 3:  0.0000 1.0000
+## class 4:  0.0000 1.0000
+## class 5:  0.9370 0.0630
+## 
+## $F
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  1.0000 0.0000
+## class 3:  1.0000 0.0000
+## class 4:  0.3857 0.6143
+## class 5:  1.0000 0.0000
+## 
+## $G
+##            Pr(1)  Pr(2)
+## class 1:  1.0000 0.0000
+## class 2:  0.4206 0.5794
+## class 3:  0.0000 1.0000
+## class 4:  0.0000 1.0000
+## class 5:  0.0000 1.0000
+## 
+## Estimated class population shares 
+##  0.3722 0.1628 0.1111 0.3449 0.009 
+##  
+## Predicted class memberships (by modal posterior prob.) 
+##  0.3729 0.1864 0.1186 0.3136 0.0085 
+##  
+## ========================================================= 
+## Fit for 5 latent classes: 
+## ========================================================= 
+## number of observations: 118 
+## number of estimated parameters: 39 
+## residual degrees of freedom: 79 
+## maximum log-likelihood: -286.8843 
+##  
+## AIC(5): 651.7687
+## BIC(5): 759.8254
+## G^2(5): 1.620413 (Likelihood ratio/deviance statistic) 
+## X^2(5): 1.40952 (Chi-square goodness of fit) 
+## </code></pre>
+<p>ちなみにpoLCA関数を回した時に出てくるアレコレが邪魔な場合は，<code>verbose</code>引数をFALSEにすればよい。ただし，有用なエラーを見逃す可能性があるのでおすすめしない。</p>
+</div>
+</div>
+<div id="モデル選択" class="section level1">
+<h1>モデル選択</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>result <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw">unnest</span>(glance) </span></code></pre></div>
+<pre><code>## # A tibble: 5 x 12
+##   model.no model tidy  logLik   AIC   BIC g.squared chi.squared    df
+##      &lt;int&gt; &lt;lis&gt; &lt;lis&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
+## 1        1 &lt;poL~ &lt;tib~  -524. 1063. 1082.    477.       1975.       7
+## 2        2 &lt;poL~ &lt;tib~  -317.  665.  706.     62.4        92.6     15
+## 3        3 &lt;poL~ &lt;tib~  -294.  633.  697.     15.3        20.5     23
+## 4        4 &lt;poL~ &lt;tib~  -289.  641.  726.      6.42       10.1     31
+## 5        5 &lt;poL~ &lt;tib~  -287.  652.  760.      1.62        1.41    39
+## # ... with 3 more variables: df.residual &lt;dbl&gt;, nobs &lt;int&gt;, augment &lt;list&gt;</code></pre>
+<p>基本的にはBICを参考にする。<br />
+このパッケージではできないが，<a href="https://ides.hatenablog.com/entry/2019/11/20/200432">ブートストラップ尤度比検定（BLRT）</a>が最も有効で，その次にBICが有効で，AICはあてにしないほうがいいという研究がある。詳しくは<a href="https://ir.library.osaka-u.ac.jp/repo/ouka/all/12447/ahs33_43.pdf">藤原・伊藤・谷岡（2012）</a></p>
+<p>今回はAIC，BICともに3クラスを支持しているため，3クラスで見ていく。</p>
+</div>
+<div id="クラスの特徴の把握" class="section level1">
+<h1>クラスの特徴の把握</h1>
+<p>析出した潜在クラスの特徴を把握する。<br />
+冒頭の関数が大活躍する。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>result <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">  </span><span class="kw">filter</span>(model.no <span class="op">==</span><span class="st"> </span><span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="st">  </span><span class="kw">poLCA_check_class</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="st">  </span><span class="kw">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">variable</th>
+<th align="right">outcome</th>
+<th align="right">1</th>
+<th align="right">2</th>
+<th align="right">3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">クラス構成割合</td>
+<td align="right">NA</td>
+<td align="right">0.182</td>
+<td align="right">0.445</td>
+<td align="right">0.374</td>
+</tr>
+<tr class="even">
+<td align="left">A</td>
+<td align="right">1</td>
+<td align="right">0.487</td>
+<td align="right">0.000</td>
+<td align="right">0.943</td>
+</tr>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">2</td>
+<td align="right">0.513</td>
+<td align="right">1.000</td>
+<td align="right">0.057</td>
+</tr>
+<tr class="even">
+<td align="left">B</td>
+<td align="right">1</td>
+<td align="right">0.000</td>
+<td align="right">0.019</td>
+<td align="right">0.862</td>
+</tr>
+<tr class="odd">
+<td align="left">B</td>
+<td align="right">2</td>
+<td align="right">1.000</td>
+<td align="right">0.981</td>
+<td align="right">0.138</td>
+</tr>
+<tr class="even">
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="right">1.000</td>
+<td align="right">0.142</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="left">C</td>
+<td align="right">2</td>
+<td align="right">0.000</td>
+<td align="right">0.858</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">D</td>
+<td align="right">1</td>
+<td align="right">0.942</td>
+<td align="right">0.414</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="left">D</td>
+<td align="right">2</td>
+<td align="right">0.058</td>
+<td align="right">0.586</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">E</td>
+<td align="right">1</td>
+<td align="right">0.249</td>
+<td align="right">0.000</td>
+<td align="right">0.945</td>
+</tr>
+<tr class="odd">
+<td align="left">E</td>
+<td align="right">2</td>
+<td align="right">0.751</td>
+<td align="right">1.000</td>
+<td align="right">0.055</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="right">1</td>
+<td align="right">1.000</td>
+<td align="right">0.524</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="left">F</td>
+<td align="right">2</td>
+<td align="right">0.000</td>
+<td align="right">0.476</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">G</td>
+<td align="right">1</td>
+<td align="right">0.369</td>
+<td align="right">0.000</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="left">G</td>
+<td align="right">2</td>
+<td align="right">0.631</td>
+<td align="right">1.000</td>
+<td align="right">0.000</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>クラス3はほぼ全員から陰性と判断されている。<br />
+</li>
+<li>クラス2はDとF以外から陽性と判断されている。<br />
+</li>
+<li>クラス1は判断する人によって結果がかなり異なる。<br />
+だいたい冒頭の読み通りな気がする。</li>
+</ul>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
