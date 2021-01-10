@@ -6,5 +6,7 @@
 *.Rmd
 cache/
 files/
+!/.docs/files
+!/.docs/cache
 _site.yml
 site_style.css
