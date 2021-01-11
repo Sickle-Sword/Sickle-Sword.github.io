@@ -4,7 +4,7 @@
 .Ruserdata
 *.Rproj
 *.Rmd
-/cache
-/files
+/cache/
+/files/
 _site.yml
 site_style.css
